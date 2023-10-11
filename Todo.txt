@@ -1,0 +1,24 @@
+Bugs to Fix :
+==============================
+
+
+
+TODO for Maze Solver project :
+==============================
+How to write Documentation
+1. Write Documentations
+2. Upload to git
+3. Convert all if else if statements to switch form
+4. Maze data from Visualizer
+
+5. Make it take input from text file instead of changing data in the main program.
+
+
+Solving Algorithm:
+===============================
+1. Write the solving algorithm
+2. Follow one wall algorithm
+2. Find Shortest path out of all the possiblities
+
+
+add checkPoint to the cell then try first route, if deadEnd reached go back to checkPoint and go in the second route
