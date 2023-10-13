@@ -5,12 +5,6 @@ Bugs to Fix :
 
 TODO for Maze Solver project :
 ==============================
-How to write Documentation
-1. Write Documentations
-2. Upload to git
-3. Convert all if else if statements to switch form
-4. Maze data from Visualizer
-
 5. Make it take input from text file instead of changing data in the main program.
 
 
