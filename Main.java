@@ -25,33 +25,64 @@ public class Main {
                 {"0000", "0111", "1010", "1100"},
                 {"0000", "0110", "1010", "1001"},
                 {"0000", "0000", "0000", "0100"}};
+        String[][] maze6 = { //
+                {"0010", "1001", "0010", "1001"},
+                {"0000", "0111", "1010", "1100"},
+                {"0000", "0110", "1010", "1001"},
+                {"0000", "0010", "1000", "0100"}};
+        String[][] maze7 = { //
+                {"0010", "1001", "0010", "1001"},
+                {"0010", "1111", "1010", "1100"},
+                {"0001", "0111", "1010", "1001"},
+                {"0100", "0110", "1000", "0100"}};
 
         MazeVisualizer obj = new MazeVisualizer();
-        obj.createArray(maze3);
-        solve(maze3);
+        obj.createArray(maze7);
+        solve(maze7);
     }
 
-    static void solve(String[][] maze) {
+    static void solve(String[][] maze){
         int[] pos = {0,0};
         char lastMove = 'x';
-        int len = maze.length - 1;
-        while(true){
-
-            if(pos[0] == maze.length -1 && pos[1] == maze.length -1){
-                System.out.println("---END FOUND---");
-                return;
-            }
-            else if(isDeadEnd(maze, pos, lastMove)){
-                System.out.println("<DEAD END>");
-            }
-
-            if(pos[0] == len && pos[1] == len)
-                return;
-
-            lastMove = move(maze, pos, lastMove);
+        int[] lastCheckPoint = {0,0};
+        solveRecursive(maze, pos, lastMove);
+        if (endVar == 1){
+            System.out.println("End Reached :)");
         }
     }
 
+
+    static char tempLastMove;
+    static int endVar = 0;
+    static void solveRecursive(String[][] maze, int[] pos,char lastMove) {
+        if(reachedEnd(maze, pos) ){
+            endVar = 1;
+            return;
+        }
+        if (isDeadEnd(maze, pos, lastMove)) {
+            System.out.println("DeadEnd");
+            return;
+        }
+        if (numberOfChoices(maze, pos) > 2) {
+            tempLastMove = lastMove;
+            //for(int i = 0; i< numberOfChoices(maze, pos); i++) {
+            while(!reachedEnd(maze, pos)){
+                tempLastMove = move(maze, pos, lastMove);
+                solveRecursive(maze, pos, move(maze, pos, tempLastMove));
+            }
+        }
+        else{
+            lastMove = move(maze, pos, lastMove);
+        }
+        solveRecursive(maze, pos, lastMove);
+    }
+
+    static boolean reachedEnd(String[][] maze,int[] pos){
+        if(pos[0] == maze.length -1 && pos[1] == maze.length -1){
+            return true;
+        }
+        return false;
+    }
 
 
 
@@ -116,7 +147,7 @@ public class Main {
                         return false;
                     }
                 case 'l':
-                    if(i == 0){
+                    if(i == 2){
                         continue;
                     }
                     else if(curr.charAt(i) == '0'){
@@ -127,7 +158,7 @@ public class Main {
                         return false;
                     }
                 case 'r':
-                    if(i == 2){
+                    if(i == 0){
                         continue;
                     }
                     else if(curr.charAt(i) == '0'){
