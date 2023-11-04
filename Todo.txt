@@ -1,5 +1,27 @@
+ISSUES WHILE MOVING UP IN the maze
+Checkpoint where the pointer is supposed to move u
+
+If (checkpoint)
+tempStr = maze.i.j
+checkpointWalls(tempStr, lastMove)
+same old for loop
+
+checkPointWalls : Takes in maze.i.j in str and considering lastmove blocks walls all the walls visited in the old loop and converts 1 into 0 
+
+
+Method to detect if the maze data has flaws (cell conflicts)
+Cleanup code 
+
+Update readme
+==============================
+
+
 Bugs to Fix :
 ==============================
+Not working for larger mazes 
+
+
+Write a whole new code for move() with better algorithm
 
 
 

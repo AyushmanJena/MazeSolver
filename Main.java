@@ -1,8 +1,5 @@
-// Taking maze input as Strings array
-
 public class Main {
     public static void main(String[] args) {
-        //int[][] maze = new int[3][3];
         String[][] maze = { // Simple one way
                 {"0001", "0011", "1001"},
                 {"0101", "0101", "0101"},
@@ -35,6 +32,16 @@ public class Main {
                 {"0010", "1111", "1010", "1100"},
                 {"0001", "0111", "1010", "1001"},
                 {"0100", "0110", "1000", "0100"}};
+        String[][] maze8 = { //8x8 maze
+                {"0010", "1010", "1001", "0011", "1010", "1000", "0011", "1001"},
+                {"0011", "1001", "0101", "0101", "0010", "1010", "1100", "0101"},
+                {"0101", "0100", "0101", "0111", "1010", "1001", "0010", "1101"},
+                {"0111", "1010", "1101", "0101", "0001", "0110", "1010", "1101"},
+                {"0101", "0010", "1100", "0101", "0110", "1011", "1010", "1100"},
+                {"0111", "1011", "1010", "1100", "0011", "1110", "1010", "1001"}, // 5,3 : 1101
+                {"0101", "0100", "0001", "0001", "0101", "0010", "1001", "0101"}, // 6,3 : 0101
+                {"0110", "1010", "1100", "0100", "0110", "1010", "1100", "0100"}
+        };
 
         MazeVisualizer obj = new MazeVisualizer();
         obj.createArray(maze7);
@@ -51,7 +58,6 @@ public class Main {
         }
     }
 
-
     static char tempLastMove;
     static int endVar = 0;
     static void solveRecursive(String[][] maze, int[] pos,char lastMove) {
@@ -65,7 +71,6 @@ public class Main {
         }
         if (numberOfChoices(maze, pos) > 2) {
             tempLastMove = lastMove;
-            //for(int i = 0; i< numberOfChoices(maze, pos); i++) {
             while(!reachedEnd(maze, pos)){
                 tempLastMove = move(maze, pos, lastMove);
                 solveRecursive(maze, pos, move(maze, pos, tempLastMove));
@@ -83,9 +88,6 @@ public class Main {
         }
         return false;
     }
-
-
-
 
     public static char move(String[][] maze, int[] pos, char lastMove){
         String curr = maze[pos[0]][pos[1]];
@@ -129,8 +131,9 @@ public class Main {
         System.out.println("(" + pos[0] + "," + pos[1] + ")");
         return lastMove;
     }
+
     public static boolean isDeadEnd(String[][] maze,int[] pos, char lastMove){
-        String curr = maze[pos[0]][pos[1]]; // original
+        String curr = maze[pos[0]][pos[1]];
         boolean deadEnd = false;
 
         for(int i = 0; i<4; i++){
