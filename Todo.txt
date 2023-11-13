@@ -1,40 +1,17 @@
-ISSUES WHILE MOVING UP IN the maze
-Checkpoint where the pointer is supposed to move u
-
-If (checkpoint)
-tempStr = maze.i.j
-checkpointWalls(tempStr, lastMove)
-same old for loop
-
-checkPointWalls : Takes in maze.i.j in str and considering lastmove blocks walls all the walls visited in the old loop and converts 1 into 0 
-
-
-Method to detect if the maze data has flaws (cell conflicts)
-Cleanup code 
-
 Update readme
 ==============================
 
 
 Bugs to Fix :
-==============================
-Not working for larger mazes 
-
-
-Write a whole new code for move() with better algorithm
-
+=============================
 
 
 TODO for Maze Solver project :
 ==============================
+1. Method to Detect if the maze has flaws(cell conflicts)
 5. Make it take input from text file instead of changing data in the main program.
 
 
 Solving Algorithm:
 ===============================
-1. Write the solving algorithm
-2. Follow one wall algorithm
 2. Find Shortest path out of all the possiblities
-
-
-add checkPoint to the cell then try first route, if deadEnd reached go back to checkPoint and go in the second route
