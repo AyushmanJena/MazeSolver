@@ -1,135 +1,147 @@
 public class Main {
     public static void main(String[] args) {
-        String[][] maze = { // Simple one way
-                {"0001", "0011", "1001"},
-                {"0101", "0101", "0101"},
-                {"0110", "1100", "0100"}};
-        String[][] maze2 = { //simple one way
-                {"0010", "1010", "1001"},
-                {"0011", "1010", "1100"},
-                {"0110", "1010", "1000"}};
-        String[][] maze3 = { // 3x3 with a two-way
-                {"0010", "1001", "0001"},
-                {"0011", "1110", "1100"},
-                {"0110", "1010", "1000"}};
-        String[][] maze4 = { // 4x4 maze
-                {"0001", "0000", "0011", "1001"},
-                {"0110", "1001", "0101", "0101"},
-                {"0000", "0101", "0101", "0101"},
-                {"0000", "0110", "1100", "0100"}};
-        String[][] maze5 = { // 4x4 maze with a two-way
-                {"0010", "1001", "0000", "0001"},
-                {"0000", "0111", "1010", "1100"},
-                {"0000", "0110", "1010", "1001"},
-                {"0000", "0000", "0000", "0100"}};
-        String[][] maze6 = { //
-                {"0010", "1001", "0010", "1001"},
-                {"0000", "0111", "1010", "1100"},
-                {"0000", "0110", "1010", "1001"},
-                {"0000", "0010", "1000", "0100"}};
-        String[][] maze7 = { //
-                {"0010", "1001", "0010", "1001"},
-                {"0010", "1111", "1010", "1100"},
-                {"0001", "0111", "1010", "1001"},
-                {"0100", "0110", "1000", "0100"}};
-        String[][] maze8 = { //8x8 maze
+        String[][] maze2 = { //8x8 maze
                 {"0010", "1010", "1001", "0011", "1010", "1000", "0011", "1001"},
                 {"0011", "1001", "0101", "0101", "0010", "1010", "1100", "0101"},
                 {"0101", "0100", "0101", "0111", "1010", "1001", "0010", "1101"},
                 {"0111", "1010", "1101", "0101", "0001", "0110", "1010", "1101"},
                 {"0101", "0010", "1100", "0101", "0110", "1011", "1010", "1100"},
-                {"0111", "1011", "1010", "1100", "0011", "1110", "1010", "1001"}, // 5,3 : 1101
-                {"0101", "0100", "0001", "0001", "0101", "0010", "1001", "0101"}, // 6,3 : 0101
+                {"0111", "1011", "1010", "1101", "0011", "1110", "1010", "1001"}, // 5,3 : 1101
+                {"0101", "0100", "0001", "0101", "0101", "0010", "1001", "0101"}, // 6,3 : 0101
                 {"0110", "1010", "1100", "0100", "0110", "1010", "1100", "0100"}
         };
+        String[][] maze = { // 4x4 maze with T junction error
+                {"0001", "0000", "0011", "1001"},
+                {"0101", "0000", "0101", "0101"},
+                {"0111", "1010", "1101", "0101"},
+                {"0110", "1000", "0100", "0100"}};
 
         MazeVisualizer obj = new MazeVisualizer();
-        obj.createArray(maze7);
-        solve(maze7);
+        obj.createArray(maze2);
+        solve(maze2);
     }
 
     static void solve(String[][] maze){
         int[] pos = {0,0};
         char lastMove = 'x';
-        int[] lastCheckPoint = {0,0};
-        solveRecursive(maze, pos, lastMove);
-        if (endVar == 1){
-            System.out.println("End Reached :)");
+        while(!reachedEnd(maze,pos)){
+            lastMove = move(maze,pos, lastMove);
+        }
+        if(reachedEnd(maze, pos)){
+            System.out.println("End Reached");
+        }
+        else{
+            System.out.println("Couldn't find End");
         }
     }
 
-    static char tempLastMove;
-    static int endVar = 0;
-    static void solveRecursive(String[][] maze, int[] pos,char lastMove) {
-        if(reachedEnd(maze, pos) ){
-            endVar = 1;
-            return;
+    public static char move(String[][] maze, int[] pos, char lastMove){
+        String curr = maze[pos[0]][pos[1]];
+        if(isDeadEnd(maze, pos, lastMove)){
+            System.out.println("DeadEnd Reached !!!");
+            switch(lastMove){
+                case'l':
+                    lastMove = moveRight(pos);
+                    break;
+                case 'u':
+                    lastMove = moveDown(pos);
+                    break;
+                case 'r':
+                    lastMove = moveLeft(pos);
+                    break;
+                case 'd':
+                    lastMove = moveUp(pos);
+                    break;
+            }
         }
-        if (isDeadEnd(maze, pos, lastMove)) {
-            System.out.println("DeadEnd");
-            return;
-        }
-        if (numberOfChoices(maze, pos) > 2) {
-            tempLastMove = lastMove;
-            while(!reachedEnd(maze, pos)){
-                tempLastMove = move(maze, pos, lastMove);
-                solveRecursive(maze, pos, move(maze, pos, tempLastMove));
+        else if(numberOfChoices(maze,pos) > 2){
+            if(lastMove == 'u'){
+                lastMove = tempChecker(maze,pos, lastMove, 0);
+            }
+            if(lastMove == 'r'){
+                lastMove = tempChecker(maze, pos,lastMove, 1);
+            }
+            if(lastMove == 'd'){
+                lastMove = tempChecker(maze,pos, lastMove, 2);
+            }
+            if(lastMove == 'l'){
+                lastMove = tempChecker(maze,pos, lastMove, 3);
             }
         }
         else{
-            lastMove = move(maze, pos, lastMove);
+            if(curr.charAt(2) == '1' && lastMove != 'l'){
+                lastMove = moveRight(pos);
+            }
+            else if(curr.charAt(3) == '1' && lastMove != 'u'){
+                lastMove = moveDown(pos);
+            }
+            else if(curr.charAt(0) == '1' && lastMove != 'r'){
+                lastMove = moveLeft(pos);
+            }
+            else if(curr.charAt(1) == '1' && lastMove != 'd'){
+                lastMove = moveUp(pos);
+            }
         }
-        solveRecursive(maze, pos, lastMove);
+        return lastMove;
     }
+
+    public static char tempChecker(String[][] maze, int[] pos, char lastMove, int n){
+        int i = n;
+        String curr = maze[pos[0]][pos[1]];
+        while(i <= 3){
+            if(curr.charAt(i) == '1'){
+                if(i == 0)
+                    return moveLeft(pos);
+                if(i == 1)
+                    return moveUp(pos);
+                if (i == 2)
+                    return moveRight(pos);
+                if(i == 3)
+                    return moveDown(pos);
+            }
+            i++;
+            if(i==4){
+                i = 0;
+            }
+        }
+        return lastMove;
+    }
+
+    public static char moveRight(int[] pos){
+        pos[1]++;
+        System.out.println("(" + pos[0] + "," + pos[1] + ")");
+        return 'r'; //lastMove
+    }
+    public static char moveDown(int[] pos){
+        pos[0]++;
+        System.out.println("(" + pos[0] + "," + pos[1] + ")");
+        return 'd'; //lastMove
+    }
+    public static char moveLeft(int[] pos){
+        if (pos[1] >= 0) {
+            pos[1]--;
+            System.out.println("(" + pos[0] + "," + pos[1] + ")");
+        }
+        return 'l'; //lastMove
+    }
+    public static char moveUp(int[] pos){
+        if (pos[0] >= 0) {
+            pos[0]--;
+            System.out.println("(" + pos[0] + "," + pos[1] + ")");
+        }
+        return 'u'; //lastMove
+    }
+
+
+
+
+
 
     static boolean reachedEnd(String[][] maze,int[] pos){
         if(pos[0] == maze.length -1 && pos[1] == maze.length -1){
             return true;
         }
         return false;
-    }
-
-    public static char move(String[][] maze, int[] pos, char lastMove){
-        String curr = maze[pos[0]][pos[1]];
-        if(isDeadEnd(maze, pos, lastMove)){
-            switch(lastMove){
-                case'l':
-                    pos[1]++;
-                    lastMove = 'r';
-                    break;
-                case 'u' :
-                    pos[0]++;
-                    lastMove = 'd';
-                    break;
-                case 'r':
-                    pos[1]--;
-                    lastMove = 'l';
-                    break;
-                case 'd':
-                    pos[0]--;
-                    lastMove = 'u';
-            }
-        }
-        else{
-            if(curr.charAt(2) == '1' && lastMove != 'l'){
-                pos[1]++; // move right
-                lastMove = 'r';
-            }
-            else if(curr.charAt(3) == '1' && lastMove != 'u'){
-                pos[0]++; // move down
-                lastMove = 'd';
-            }
-            else if(curr.charAt(0) == '1' && lastMove != 'r'){
-                pos[1]--; // move left
-                lastMove = 'l';
-            }
-            else if(curr.charAt(1) == '1' && lastMove != 'd'){
-                pos[0]--; // move up
-                lastMove = 'u';
-            }
-        }
-        System.out.println("(" + pos[0] + "," + pos[1] + ")");
-        return lastMove;
     }
 
     public static boolean isDeadEnd(String[][] maze,int[] pos, char lastMove){
