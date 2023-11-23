@@ -1,5 +1,6 @@
 public class Main {
     public static void main(String[] args) {
+
         String[][] maze2 = { //8x8 maze
                 {"0010", "1010", "1001", "0011", "1010", "1000", "0011", "1001"},
                 {"0011", "1001", "0101", "0101", "0010", "1010", "1100", "0101"},
@@ -16,18 +17,22 @@ public class Main {
                 {"0111", "1010", "1101", "0101"},
                 {"0110", "1000", "0100", "0100"}};
 
+        int[] end = {3,1};
+        int[] start = {0, 3};
+
         MazeVisualizer obj = new MazeVisualizer();
-        obj.createArray(maze2);
-        solve(maze2);
+        obj.createArray(maze);
+        solve(maze, start, end);
     }
 
-    static void solve(String[][] maze){
-        int[] pos = {0,0};
+    static void solve(String[][] maze, int[] start, int[] end){
+        int[] pos = {start[0],start[1]};
+        System.out.println("(" + pos[0] + "," + pos[1] + ")");
         char lastMove = 'x';
-        while(!reachedEnd(maze,pos)){
+        while(!reachedEnd(maze,pos,end)){
             lastMove = move(maze,pos, lastMove);
         }
-        if(reachedEnd(maze, pos)){
+        if(reachedEnd(maze, pos, end)){
             System.out.println("End Reached");
         }
         else{
@@ -131,8 +136,8 @@ public class Main {
         }
     }
 
-    static boolean reachedEnd(String[][] maze,int[] pos){
-        if(pos[0] == maze.length -1 && pos[1] == maze.length -1){
+    static boolean reachedEnd(String[][] maze,int[] pos, int[] end){
+        if(pos[0] == end[0] && pos[1] == end[1]){
             return true;
         }
         return false;
