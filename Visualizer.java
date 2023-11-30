@@ -1,19 +1,19 @@
-public class MazeVisualizer {
+// TO BE FIXED
 
-    public void createArray(String[][] maze){
-
+public class Visualizer {
+    public void createArray(MazeData[][] maze){
         int z = (maze.length*2) + 1;
         int y = (maze[0].length*2) + 1;
-        char[][] drawArray = new char[z][z];
+        boolean[][] drawArray = new boolean[z][y];
 
-        for(int row = 0; row < z; row++){
-            for(int col = 0 ; col < y; col++){
-                drawArray[row][col] = '0';
+        for(int row = 0; row<z; row++){
+            for(int col = 0; col<y; col++){
+                drawArray[row][col] = false;
             }
         }
 
-        int i = 0,j = 0, k = 0;
-        for(int r = 0; r < drawArray.length - 1 ; r++){
+        int i = 0, j = 0, k = 0;
+        for(int r = 0; r< drawArray.length-1; r++){
             if(r > 0 && r%2==0 ){
                 i++;
             }
@@ -23,10 +23,10 @@ public class MazeVisualizer {
                         continue;
                     }
                     if(r%2 != 0){
-                        drawArray[r][c] = '1'; // empty space for cell center
+                        drawArray[r][c] = true; // empty space for cell center
                     }
                     else{
-                        drawArray[r][c] = '0'; // line for in between two rows
+                        drawArray[r][c] = false; // line for in between two rows
                     }
                 }
                 else if(r%2 == 0){ // r is even , c is odd
@@ -42,25 +42,8 @@ public class MazeVisualizer {
                     j++;
                 }
             }
-            j = 0;
+            j++;
         }
-
-        drawMaze(drawArray);
+        //drawMaze(drawArray);
     }
-
-    public void drawMaze(char[][] arr){
-        for(int i = 0; i< arr.length; i++){
-            for(int j = 0; j < arr[0].length; j++){
-
-                if(arr[i][j] == '1'){
-                    System.out.print(" ");
-                }
-                else{
-                    System.out.print("|");
-                }
-            }
-            System.out.println();
-        }
-    }
-
 }
