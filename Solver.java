@@ -14,9 +14,10 @@ public class Solver {
         }
     }
 
-    public char move(MazeData[][] maze, int[] pos, char lastMove){
-        MazeData cell = new MazeData();
-        cell = maze[pos[0]][pos[1]];
+    char move(MazeData[][] maze, int[] pos, char lastMove){
+        //maze[pos[0]][pos[1]].isDeadEnd = isDeadEnd(maze,pos,lastMove);
+        MazeData cell = maze[pos[0]][pos[1]];
+
         if(isDeadEnd(maze,pos,lastMove)){
             System.out.println("DEADEND REACHED");
             switch(lastMove){
@@ -67,7 +68,7 @@ public class Solver {
         return lastMove;
     }
 
-    public char moveDecide(MazeData[][] maze,int[] pos,char lastMove, int n){
+    char moveDecide(MazeData[][] maze,int[] pos,char lastMove, int n){
         int i = n;
         MazeData cell = maze[pos[0]][pos[1]];
         while(i<3){
@@ -88,7 +89,7 @@ public class Solver {
         return lastMove;
     }
 
-    public char moveDirection(int[] pos, char dir){
+    char moveDirection(int[] pos, char dir){
         switch (dir){
             case 'r':
                 pos[1]++;
@@ -111,14 +112,14 @@ public class Solver {
         }
     }
 
-    public boolean reachedEnd(MazeData[][] maze, int[] pos, int[] end){
+    boolean reachedEnd(MazeData[][] maze, int[] pos, int[] end){
         if(pos[0] == end[0] && pos[1] == end[1]){
             return true;
         }
         return false;
     }
 
-    public static boolean isDeadEnd(MazeData[][] maze, int[] pos, char lastMove){
+    static boolean isDeadEnd(MazeData[][] maze, int[] pos, char lastMove){
         MazeData cell = maze[pos[0]][pos[1]];
         //boolean deadEnd = false;
 
@@ -143,7 +144,7 @@ public class Solver {
         return false;
     }
 
-    public boolean isCheckPoint(MazeData[][] maze, int[] pos){
+    boolean isCheckPoint(MazeData[][] maze, int[] pos){
         MazeData cell = maze[pos[0]][pos[1]];
         int count = 0;
 

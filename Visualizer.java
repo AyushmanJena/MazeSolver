@@ -1,49 +1,62 @@
 // TO BE FIXED
 
 public class Visualizer {
+
     public void createArray(MazeData[][] maze){
         int z = (maze.length*2) + 1;
         int y = (maze[0].length*2) + 1;
         boolean[][] drawArray = new boolean[z][y];
 
-        for(int row = 0; row<z; row++){
+        for(int row = 0; row<z; row++){ //not really necessary but for error searching purpose
             for(int col = 0; col<y; col++){
                 drawArray[row][col] = false;
             }
         }
 
-        int i = 0, j = 0, k = 0;
-        for(int r = 0; r< drawArray.length-1; r++){
-            if(r > 0 && r%2==0 ){
-                i++;
+        int i = 0, j =0; // variables for original data table if not array
+        for(int r = 0; r<drawArray.length; r++){
+            if(r %2 == 0){
+                continue;
             }
-            for(int c = 0; c < drawArray[r].length - 1; c++){
-                if((r + c)%2 == 0){ // r + c is even
-                    if(r == 0 || c == 0){
-                        continue;
+            j = 0;
+            //else if r is odd
+            for(int c = 0; c<drawArray[r].length; c++){
+                if((r+c)%2 != 0){ // if r+c is odd continue;
+                    continue;
+                }
+                else{ // if r+c is even do check sides and stuff
+
+                    MazeData cell = maze[i][j]; // this is a cell
+                    drawArray[r][c] = true;
+                    if(cell.left == true){
+                        drawArray[r][c-1] = true;
                     }
-                    if(r%2 != 0){
-                        drawArray[r][c] = true; // empty space for cell center
+                    if(cell.top == true){
+                        drawArray[r-1][c] = true;
                     }
-                    else{
-                        drawArray[r][c] = false; // line for in between two rows
+                    if(cell.right == true){
+                        drawArray[r][c+1] = true;
+                    }
+                    if(cell.bottom == true){
+                        drawArray[r+1][c] = true;
                     }
                 }
-                else if(r%2 == 0){ // r is even , c is odd
-                    k = 1;
-                    // System.out.println(r +" " + c +" > " + i+" " + j+" " + k); // for debugging
-                    drawArray[r][c] = maze[i][j].charAt(k);
-                    j++;
-                }
-                else{ // r is odd , c is even
-                    k = 0;
-                    // System.out.println(r +" "+ c +" > " + i+" " + j+" " + k); // for debugging
-                    drawArray[r][c] = maze[i][j].charAt(k);
-                    j++;
-                }
+                j++;
             }
-            j++;
+            i++;
         }
-        //drawMaze(drawArray);
+
+        for(i = 0; i<drawArray.length; i++){
+            for(j = 0; j<drawArray[i].length; j++){
+                if(drawArray[i][j]){
+                    System.out.print(" ");
+                }
+                else{
+                    System.out.print("|");
+                }
+            }
+            System.out.println();
+        }
+
     }
 }

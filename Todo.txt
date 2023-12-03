@@ -1,5 +1,7 @@
 To Check : 
 ==============================
+Test all pre existing mazes with the Object Oriented Design.
+
 
 
 Bugs to Fix :
