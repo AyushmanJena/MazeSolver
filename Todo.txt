@@ -4,9 +4,11 @@ To Check :
 
 Bugs to Fix :
 =============================
+Cant find end from Follow the wall method
 
 TODO for Maze Solver project :
 ==============================
+0. Give "End Not Found" if end isnot found
 1. Method to Detect if the maze has flaws(cell conflicts)
 2. Apply Termaux's Algorithm to solve loops
 3. Make it take input from text file instead of changing data in the main program.

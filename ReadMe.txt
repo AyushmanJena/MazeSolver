@@ -1,8 +1,10 @@
-Introduction : 
+Introduction :
 ==============================================
 A simple maze runner build from scratch using Java. This code is supposed to evolve over time with more functionalities, solving algorithms and possibilities getting added with every commit.
 
 For now it is a simple maze solver.
+
+[Needs to be updated after successfully implementing the object concept for easier algorithms]
 
 Q > How it takes maze data ?
 A > The code takes a 2D string array named 'maze' in the main() which consists of 0s and 1s.
@@ -16,7 +18,7 @@ However I am looking forward to make it easier to take data input from another t
 Q > Why String Array instead of Integer or Boolean ? 
 A > It is easier to get to a particular character of a string array with the charAt().
 
-Main() :
+NotMain() :
 =============================================
 Solve(String[][] maze) :
 For now this method moves in any direction it finds the way. It works well with single way mazes and not so well when there are multiple choices.
@@ -72,6 +74,3 @@ drawMaze(drawArray) :
 it prints empty space for every 1 
 and desired character (here '|' ) for every 0
 '|' character is best suited as it minimizes the vertical space between lines and makes it less confusing.
-
-
-
