@@ -15,10 +15,10 @@ public class Solver {
     }
 
     char move(MazeData[][] maze, int[] pos, char lastMove){
-        //maze[pos[0]][pos[1]].isDeadEnd = isDeadEnd(maze,pos,lastMove);
+        maze[pos[0]][pos[1]].isDeadEnd = isDeadEnd(maze,pos,lastMove);
         MazeData cell = maze[pos[0]][pos[1]];
 
-        if(isDeadEnd(maze,pos,lastMove)){
+        if(cell.isDeadEnd){
             System.out.println("DEADEND REACHED");
             switch(lastMove){
                 case'l':
@@ -71,21 +71,21 @@ public class Solver {
     char moveDecide(MazeData[][] maze,int[] pos,char lastMove, int n){
         int i = n;
         MazeData cell = maze[pos[0]][pos[1]];
-        while(i<3){
-            if(cell.left == true && i == 0){
+        while(i<=3){
+            if(cell.left == true && i == 0)
                 return moveDirection(pos, 'l');
-            }
             if(cell.top == true && i == 1)
                 return moveDirection(pos, 'u');
             if (cell.right == true && i == 2)
                 return moveDirection(pos, 'r');
             if(cell.bottom == true && i == 3)
                 return moveDirection(pos, 'd');
+            i++;
+            if(i == 4){
+                i = 0;
+            }
         }
-        i++;
-        if(i == 4){
-            i = 0;
-        }
+
         return lastMove;
     }
 
@@ -129,15 +129,15 @@ public class Solver {
                     return true;
                 }
             case 'l':
-                if(!cell.right && !cell.bottom && !cell.top){
+                if(!cell.left && !cell.bottom && !cell.top){
                     return true;
                 }
             case 'r':
-                if(!cell.left && !cell.bottom && !cell.top){
+                if(!cell.right && !cell.bottom && !cell.top){
                     return true;
                 }
             case 'u':
-                if(!cell.left && !cell.bottom && !cell.top){
+                if(!cell.left && !cell.right && !cell.top){
                     return true;
                 }
         }
