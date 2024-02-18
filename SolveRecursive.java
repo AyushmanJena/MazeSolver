@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class SolveRecursive {
     void solve(MazeData[][] maze, int[] start, int[] end){
         int r = start[0];
@@ -6,114 +8,81 @@ public class SolveRecursive {
         char lastMove = 'x';
 
         boolean[][] tempMaze = new boolean[maze.length][maze[0].length];
-
-        solveUtil(maze, tempMaze, r, c, end, lastMove);
+        
+        String s = "";
+        ArrayList<String> list = new ArrayList<>();
+        solveUtil2(maze, list ,tempMaze,r,c,end,lastMove);
     }
 
-    static char solveUtil(MazeData[][] maze, boolean[][] tempMaze, int r, int c, int[] end, char lastMove){
+    static char solveUtil(MazeData[][] maze,String ans, boolean[][] tempMaze, int r, int c, int[] end, char lastMove){
         if(r == end[0] && c == end[1]){
-            System.out.println("("+r+","+c+")");
+            ans = ans + r + c;
+            System.out.println(ans);
             System.out.println("END REACHED !!!");
             return 'y';
         }
         if(tempMaze[r][c]){
             return lastMove;
         }
-        else if(isDeadEnd(maze,r, c, lastMove)){
-            System.out.println("("+r+","+c+")");
-            System.out.println("DEADEND REACHED");
-            switch(lastMove){
-                case'L':
-                    return 'R';
-                case 'U':
-                    return 'D';
-                case 'R':
-                    return 'L';
-                case 'D':
-                    return 'U';
-            }
-        }
         tempMaze[r][c] = true;
 
         if(maze[r][c].right && lastMove != 'L'){
-            System.out.println("("+r+","+c+")");
-            lastMove = solveUtil(maze, tempMaze, r, c+1, end, 'R');
+            lastMove = solveUtil(maze, ans + r + c + ", ", tempMaze, r, c+1, end, 'R');
             if (lastMove == 'y') return 'y';
         }
         if(maze[r][c].bottom && lastMove != 'U'){
-            System.out.println("("+r+","+c+")");
-            lastMove = solveUtil(maze, tempMaze, r+1, c, end, 'D');
+            lastMove = solveUtil(maze,ans + r + c + ", ", tempMaze, r+1, c, end, 'D');
             if (lastMove == 'y') return 'y';
         }
         if(maze[r][c].left && lastMove != 'R'){
-            System.out.println("("+r+","+c+")");
-            lastMove = solveUtil(maze, tempMaze, r, c-1, end, 'L');
+            lastMove = solveUtil(maze,ans + r + c + ", ", tempMaze, r, c-1, end, 'L');
             if (lastMove == 'y') return 'y';
         }
         if(maze[r][c].top && lastMove != 'D'){
-            System.out.println("("+r+","+c+")");
-            lastMove = solveUtil(maze, tempMaze, r-1, c, end, 'U');
+            lastMove = solveUtil(maze,ans + r + c + ", ", tempMaze, r-1, c, end, 'U');
             if (lastMove == 'y') return 'y';
         }
         tempMaze[r][c] = false;
         return lastMove;
     }
 
-    static boolean isDeadEnd(MazeData[][] maze, int r, int c, char lastMove){
-        MazeData cell = maze[r][c];
-        //boolean deadEnd = false;
-
-        switch(lastMove){
-            case 'd':
-                if(!cell.right && !cell.bottom && !cell.left){
-                    return true;
-                }
-            case 'l':
-                if(!cell.left && !cell.bottom && !cell.top){
-                    return true;
-                }
-            case 'r':
-                if(!cell.right && !cell.bottom && !cell.top){
-                    return true;
-                }
-            case 'u':
-                if(!cell.left && !cell.right && !cell.top){
-                    return true;
-                }
-        }
-        return false;
-    }
-
-
-    // NOT WORKING
-    /*static void solveUtil2(MazeData[][] maze, boolean[][] tempMaze, int r, int c, int[] end){
+    static char solveUtil2(MazeData[][] maze,ArrayList<String> ans, boolean[][] tempMaze, int r, int c, int[] end, char lastMove){
         if(r == end[0] && c == end[1]){
-            System.out.println("End found");
-            return;
+            ans.add("(" + r +","+ c +")");
+            System.out.println(ans);
+            System.out.println("END REACHED !!!");
+            return 'y';
         }
-        if(maze[r][c].isDeadEnd){
-            return;
+        if(tempMaze[r][c]){
+            return lastMove;
         }
-
-        tempMaze[r][c] = false;
-
-        if(r < maze.length - 1 && maze[r][c].bottom){
-            System.out.println("("+r+","+c+")");
-            solveUtil(maze,tempMaze, r+1, c, end);
-        }
-        if(c < maze.length - 1 && maze[r][c].right){
-            System.out.println("("+r+","+c+")");
-            solveUtil(maze,tempMaze, r, c+1, end);
-        }
-        if(r > 0 && maze[r][c].top){
-            System.out.println("("+r+","+c+")");
-            solveUtil(maze,tempMaze, r-1, c, end);
-        }
-        if(r > 0  && maze[r][c].left){
-            System.out.println("("+r+","+c+")");
-            solveUtil(maze,tempMaze, r, c-1, end);
-        }
-
         tempMaze[r][c] = true;
-    }*/
+
+        if(maze[r][c].right && lastMove != 'L'){
+            ans.add("(" + r +","+ c +")");
+            lastMove = solveUtil2(maze, ans , tempMaze, r, c+1, end, 'R');
+            ans.remove(ans.size()-1);
+            if (lastMove == 'y') return 'y';
+        }
+        if(maze[r][c].bottom && lastMove != 'U'){
+            ans.add("(" + r +","+ c +")");
+            lastMove = solveUtil2(maze,ans, tempMaze, r+1, c, end, 'D');
+            ans.remove(ans.size()-1);
+            if (lastMove == 'y') return 'y';
+        }
+        if(maze[r][c].left && lastMove != 'R'){
+            ans.add("(" + r +","+ c +")");
+            lastMove = solveUtil2(maze,ans, tempMaze, r, c-1, end, 'L');
+            ans.remove(ans.size()-1);
+            if (lastMove == 'y') return 'y';
+        }
+        if(maze[r][c].top && lastMove != 'D'){
+            ans.add("(" + r +","+ c +")");
+            lastMove = solveUtil2(maze,ans, tempMaze, r-1, c, end, 'U');
+            ans.remove(ans.size()-1);
+            if (lastMove == 'y') return 'y';
+        }
+        tempMaze[r][c] = false;
+        return lastMove;
+    }
 }
