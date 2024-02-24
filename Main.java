@@ -13,7 +13,7 @@ public class Main{
                 {"0010", "1001", "0001"},
                 {"0011", "1110", "1100"},
                 {"0110", "1010", "1000"}};
-        String[][] mazeStr3 = {    // Simple one way
+        String[][] mazeStr4 = {    // Simple one way
                 {"0010", "1001", "0000", "0001"},
                 {"0000", "0111", "1010", "1100"},
                 {"0000", "0110", "1010", "1001"},
@@ -30,18 +30,21 @@ public class Main{
         };
 
         Util obj = new Util();
-        Solver sol = new Solver();
-        SolveRecursive sol2 = new SolveRecursive();
-        Visualizer draw = new Visualizer();
+        //Solver sol = new Solver();
+        SolveRecursive sol = new SolveRecursive();
+        //Visualizer draw = new Visualizer();
+        VisualMaze visual = new VisualMaze();
 
         MazeData[][] maze = obj.convert(mazeStr);
         int[] start = {0,0};
         int[] end = {mazeStr.length-1,mazeStr[0].length-1};
-        draw.createArray(maze);
-        //sol.solve(maze,start, end);
-        sol2.solve(maze, start, end);
-
+        //draw.createArray(maze);
+        sol.solve(maze,start, end);
+        visual.visualize(maze);
+        
         //obj.display(maze);
+
+        //testAllCases();
     }
 
     public static void testAllCases(){
@@ -94,7 +97,13 @@ public class Main{
                         {"0111", "1011", "1010", "1100", "0011", "1110", "1010", "1001"},
                         {"0101", "0100", "0001", "0001", "0101", "0010", "1001", "0101"},
                         {"0110", "1010", "1100", "0100", "0110", "1010", "1100", "0100"}
-                }
+                },
+                { // 5x5 with island
+                        {"0010", "1010", "1010", "1010", "1001"},
+                        {"0011", "1011", "1011", "1011", "1101"},
+                        {"0101", "0110", "1100", "0101", "0101"},
+                        {"0111", "1010", "1010", "1100", "0101"},
+                        {"0100", "0010", "1010", "1010", "1100"}}
         };
 
         for(int i = 0; i<mazeAll.length; i++){
@@ -102,7 +111,8 @@ public class Main{
             String[][] mazeStr = mazeAll[i];
 
             Util obj = new Util();
-            Solver sol = new Solver();
+            //Solver sol = new Solver();
+            SolveRecursive sol = new SolveRecursive();
             Visualizer draw = new Visualizer();
 
             MazeData[][] maze = obj.convert(mazeStr);
