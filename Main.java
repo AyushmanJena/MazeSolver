@@ -9,15 +9,16 @@ class MazeData {
 }
 public class Main{
     public static void main(String[] args) {
-        String[][] mazeStr2 = {    // Simple one way
+        String[][] mazeStr4 = {    // Simple one way
                 {"0010", "1001", "0001"},
                 {"0011", "1110", "1100"},
                 {"0110", "1010", "1000"}};
-        String[][] mazeStr4 = {    // Simple one way
-                {"0010", "1001", "0000", "0001"},
-                {"0000", "0111", "1010", "1100"},
-                {"0000", "0110", "1010", "1001"},
-                {"0000", "0000", "0000", "0100"}};
+        String[][] mazeStr2 = { // 5x5 with island
+                {"0010", "1010", "1010", "1010", "1001"},
+                {"0011", "1011", "1011", "1011", "1101"},
+                {"0101", "0110", "1100", "0101", "0101"},
+                {"0111", "1010", "1010", "1100", "0101"},
+                {"0100", "0010", "1010", "1010", "1100"}};
         String[][] mazeStr = { //8x8 maze with T-junction
                 {"0010", "1010", "1001", "0011", "1010", "1000", "0011", "1001"},
                 {"0011", "1001", "0101", "0101", "0010", "1010", "1100", "0101"},
@@ -32,13 +33,11 @@ public class Main{
         Util obj = new Util();
         //Solver sol = new Solver();
         SolveRecursive sol = new SolveRecursive();
-        //Visualizer draw = new Visualizer();
         VisualMaze visual = new VisualMaze();
 
         MazeData[][] maze = obj.convert(mazeStr);
         int[] start = {0,0};
         int[] end = {mazeStr.length-1,mazeStr[0].length-1};
-        //draw.createArray(maze);
         sol.solve(maze,start, end);
         visual.visualize(maze);
         

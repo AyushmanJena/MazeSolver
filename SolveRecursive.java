@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 
 public class SolveRecursive {
+    static ArrayList<int[]> path = new ArrayList<>();
     void solve(MazeData[][] maze, int[] start, int[] end){
         int r = start[0];
         int c = start[1];
@@ -46,10 +47,27 @@ public class SolveRecursive {
         return lastMove;
     }
 
+
+    static void displayPath(ArrayList<int[]> path){
+        for (int[] arr : path) {
+            System.out.println("(" + arr[0] + ", " + arr[1] + ")");
+        }
+    }
+    static void setPath(ArrayList<String> ans){
+        for(String item : ans){
+            int r = Integer.parseInt(item.substring(0,1));
+            int c = Integer.parseInt(item.substring(1));
+            int[] arr = {r, c};
+            path.add(arr);
+        }
+    }
+
     static char solveUtil2(MazeData[][] maze,ArrayList<String> ans, boolean[][] tempMaze, int r, int c, int[] end, char lastMove){
         if(r == end[0] && c == end[1]){
-            ans.add("(" + r +","+ c +")");
-            System.out.println(ans);
+            ans.add(r+""+c);
+            setPath(ans);
+            displayPath(path);
+            //System.out.println(ans);
             System.out.println("END REACHED !!!");
             return 'y';
         }
@@ -59,25 +77,25 @@ public class SolveRecursive {
         tempMaze[r][c] = true;
 
         if(maze[r][c].right && lastMove != 'L'){
-            ans.add("(" + r +","+ c +")");
+            ans.add(r+""+c);
             lastMove = solveUtil2(maze, ans , tempMaze, r, c+1, end, 'R');
             ans.remove(ans.size()-1);
             if (lastMove == 'y') return 'y';
         }
         if(maze[r][c].bottom && lastMove != 'U'){
-            ans.add("(" + r +","+ c +")");
+            ans.add(r+""+c);
             lastMove = solveUtil2(maze,ans, tempMaze, r+1, c, end, 'D');
             ans.remove(ans.size()-1);
             if (lastMove == 'y') return 'y';
         }
         if(maze[r][c].left && lastMove != 'R'){
-            ans.add("(" + r +","+ c +")");
+            ans.add(r+""+c);
             lastMove = solveUtil2(maze,ans, tempMaze, r, c-1, end, 'L');
             ans.remove(ans.size()-1);
             if (lastMove == 'y') return 'y';
         }
         if(maze[r][c].top && lastMove != 'D'){
-            ans.add("(" + r +","+ c +")");
+            ans.add(r+""+c);
             lastMove = solveUtil2(maze,ans, tempMaze, r-1, c, end, 'U');
             ans.remove(ans.size()-1);
             if (lastMove == 'y') return 'y';

@@ -25,6 +25,37 @@ public class VisualMaze extends JPanel {
 
             }
         }
+
+        Graphics2D point = (Graphics2D) g;
+        point.setColor(Color.RED);
+        SolveRecursive sol = new SolveRecursive();
+        int startR = 50;
+        int startC = 50;
+        int tempR = 0;
+        int tempC = 0;
+        point.fillOval(startR, startC,9, 9);
+        for (int[] arr : SolveRecursive.path) {
+            int r = arr[0];
+            int c = arr[1];
+            if(c > tempC){
+                point.fillOval(startR+50, startC,9, 9);
+                startR += 50;
+            } else if (c <tempC) {
+                point.fillOval(startR-50, startC,9, 9);
+                startR -= 50;
+            }
+
+            if(r > tempR){
+                point.fillOval(startR, startC + 50,9, 9);
+                startC += 50;
+            }
+            if(r < tempR){
+                point.fillOval(startR, startC - 50,9, 9);
+                startC -= 50;
+            }
+            tempR = r;
+            tempC = c;
+        }
     }
 
     static void drawCell(Graphics2D g2d, MazeData[][] maze,int row, int col, int x, int y){
