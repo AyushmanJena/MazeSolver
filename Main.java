@@ -5,21 +5,20 @@ class MazeData {
     boolean bottom;
 
     boolean isDeadEnd;
-    //boolean isCheckPoint;
 }
 public class Main{
     public static void main(String[] args) {
-        String[][] mazeStr4 = {    // Simple one way
+        String[][] mazeStr = {    // Simple one way
                 {"0010", "1001", "0001"},
                 {"0011", "1110", "1100"},
                 {"0110", "1010", "1000"}};
-        String[][] mazeStr2 = { // 5x5 with island
+        String[][] mazeStr12 = { // 5x5 with island
                 {"0010", "1010", "1010", "1010", "1001"},
                 {"0011", "1011", "1011", "1011", "1101"},
                 {"0101", "0110", "1100", "0101", "0101"},
                 {"0111", "1010", "1010", "1100", "0101"},
                 {"0100", "0010", "1010", "1010", "1100"}};
-        String[][] mazeStr = { //8x8 maze with T-junction
+        String[][] mazeStr9= { //8x8 maze with T-junction
                 {"0010", "1010", "1001", "0011", "1010", "1000", "0011", "1001"},
                 {"0011", "1001", "0101", "0101", "0010", "1010", "1100", "0101"},
                 {"0101", "0100", "0101", "0111", "1010", "1001", "0010", "1101"},
@@ -39,11 +38,13 @@ public class Main{
         int[] start = {0,0};
         int[] end = {mazeStr.length-1,mazeStr[0].length-1};
         sol.solve(maze,start, end);
-        visual.visualize(maze);
+        //visual.visualize(maze);
         
         //obj.display(maze);
 
         //testAllCases();
+
+        PathVisualizer.driver(maze, sol.path);
     }
 
     public static void testAllCases(){
@@ -117,8 +118,9 @@ public class Main{
             MazeData[][] maze = obj.convert(mazeStr);
             int[] start = {0,0};
             int[] end = {mazeStr.length-1,mazeStr[0].length-1};
-            draw.createArray(maze);
+            //draw.createArray(maze);
             sol.solve(maze,start, end);
+            PathVisualizer.driver(maze, sol.path);
         }
     }
 }
