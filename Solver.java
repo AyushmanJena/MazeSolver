@@ -1,166 +1,69 @@
+import java.util.ArrayList;
+
 public class Solver {
-    void solve(MazeData[][] maze, int[] start, int[] end){
-        int[] pos = {start[0], start[1]};
-        System.out.println("(" + pos[0] + "," + pos[1] + ")");
+    static ArrayList<int[]> path = new ArrayList<>();
+    static void solve(Maze maze){
+        Maze.Cell[][] data = maze.mazeData;
+        int[] start = maze.start;
+        int r = start[0];
+        int c = start[1];
+
         char lastMove = 'x';
-        while(!reachedEnd(maze,pos, end)){
-            lastMove = move(maze, pos, lastMove);
-        }
-        if(reachedEnd(maze,pos,end)){
-            System.out.println("===END REACHED===");
-        }
-        else{
-            System.out.println("COULDN'T FIND END");
+        boolean[][] tempMaze = new boolean[data.length][data[0].length];
+
+        ArrayList<String> list = new ArrayList<>();
+        solveUtil(maze, list, tempMaze, r, c, lastMove);
+        maze.solution = path;
+    }
+
+    static void setPath(ArrayList<String> ans){
+        for(String item : ans){
+            int r = Integer.parseInt(item.substring(0,1));
+            int c = Integer.parseInt(item.substring(1));
+            int[] arr = {r, c};
+            path.add(arr);
         }
     }
 
-    char move(MazeData[][] maze, int[] pos, char lastMove){
-        maze[pos[0]][pos[1]].isDeadEnd = isDeadEnd(maze,pos,lastMove);
-        MazeData cell = maze[pos[0]][pos[1]];
+    static char solveUtil(Maze maze, ArrayList<String> ans, boolean[][] tempMaze, int r, int c, char lastMove){
+        if(r == maze.end[0] && c == maze.end[1]){
+            ans.add(r+""+c);
+            setPath(ans);
+            Util.displayPath(path);
+            //System.out.println(ans);
+            System.out.println("END REACHED !!!");
+            return 'y';
+        }
+        if(tempMaze[r][c]){
+            return lastMove;
+        }
+        tempMaze[r][c] = true;
 
-        if(cell.isDeadEnd){
-            System.out.println("DEADEND REACHED");
-            switch(lastMove){
-                case'l':
-                    lastMove = moveDirection(pos, 'r');
-                    break;
-                case 'u':
-                    lastMove = moveDirection(pos, 'd');
-                    break;
-                case 'r':
-                    lastMove = moveDirection(pos, 'l');
-                    break;
-                case 'd':
-                    lastMove = moveDirection(pos, 'u');
-                    break;
-            }
+        if(maze.mazeData[r][c].right && lastMove != 'L'){
+            ans.add(r+""+c);
+            lastMove = solveUtil(maze, ans, tempMaze, r, c+1, lastMove);
+            ans.remove(ans.size() -1);
+            if(lastMove == 'y') return 'y';
         }
-        else if(isCheckPoint(maze,pos)){
-            switch (lastMove){
-                case 'u':
-                    lastMove = moveDecide(maze,pos, lastMove, 0);
-                    break;
-                case 'r':
-                    lastMove = moveDecide(maze, pos,lastMove, 1);
-                    break;
-                case 'd' :
-                    lastMove = moveDecide(maze,pos, lastMove, 2);
-                    break;
-                case 'l':
-                    lastMove = moveDecide(maze,pos, lastMove, 3);
-                    break;
-            }
+        if(maze.mazeData[r][c].bottom && lastMove != 'U'){
+            ans.add(r+""+c);
+            lastMove = solveUtil(maze,ans, tempMaze, r+1, c, 'D');
+            ans.remove(ans.size()-1);
+            if (lastMove == 'y') return 'y';
         }
-        else{
-            if(cell.right == true && lastMove != 'l'){
-                lastMove = moveDirection(pos, 'r');
-            }
-            else if(cell.bottom == true && lastMove != 'u'){
-                lastMove = moveDirection(pos, 'd');
-            }
-            else if(cell.left == true && lastMove != 'r'){
-                lastMove = moveDirection(pos, 'l');
-            }
-            else if(cell.top == true && lastMove != 'd'){
-                lastMove = moveDirection(pos, 'u');
-            }
+        if(maze.mazeData[r][c].left && lastMove != 'R'){
+            ans.add(r+""+c);
+            lastMove = solveUtil(maze,ans, tempMaze, r, c-1, 'L');
+            ans.remove(ans.size()-1);
+            if (lastMove == 'y') return 'y';
         }
+        if(maze.mazeData[r][c].top && lastMove != 'D'){
+            ans.add(r+""+c);
+            lastMove = solveUtil(maze,ans, tempMaze, r-1, c, 'U');
+            ans.remove(ans.size()-1);
+            if (lastMove == 'y') return 'y';
+        }
+        tempMaze[r][c] = false;
         return lastMove;
-    }
-
-    char moveDecide(MazeData[][] maze,int[] pos,char lastMove, int n){
-        int i = n;
-        MazeData cell = maze[pos[0]][pos[1]];
-        while(i<=3){
-            if(cell.left == true && i == 0)
-                return moveDirection(pos, 'l');
-            if(cell.top == true && i == 1)
-                return moveDirection(pos, 'u');
-            if (cell.right == true && i == 2)
-                return moveDirection(pos, 'r');
-            if(cell.bottom == true && i == 3)
-                return moveDirection(pos, 'd');
-            i++;
-            if(i == 4){
-                i = 0;
-            }
-        }
-
-        return lastMove;
-    }
-
-    char moveDirection(int[] pos, char dir){
-        switch (dir){
-            case 'r':
-                pos[1]++;
-                System.out.println("(" + pos[0] + "," + pos[1] + ")");
-                return 'r'; //lastMove
-            case 'd':
-                pos[0]++;
-                System.out.println("(" + pos[0] + "," + pos[1] + ")");
-                return 'd';
-            case 'l':
-                pos[1]--;
-                System.out.println("(" + pos[0] + "," + pos[1] + ")");
-                return 'l';
-            case 'u':
-                pos[0]--;
-                System.out.println("(" + pos[0] + "," + pos[1] + ")");
-                return 'u';
-            default:
-                return 'x';
-        }
-    }
-
-    boolean reachedEnd(MazeData[][] maze, int[] pos, int[] end){
-        if(pos[0] == end[0] && pos[1] == end[1]){
-            return true;
-        }
-        return false;
-    }
-
-    static boolean isDeadEnd(MazeData[][] maze, int[] pos, char lastMove){
-        MazeData cell = maze[pos[0]][pos[1]];
-        //boolean deadEnd = false;
-
-        switch(lastMove){
-            case 'd':
-                if(!cell.right && !cell.bottom && !cell.left){
-                    return true;
-                }
-            case 'l':
-                if(!cell.left && !cell.bottom && !cell.top){
-                    return true;
-                }
-            case 'r':
-                if(!cell.right && !cell.bottom && !cell.top){
-                    return true;
-                }
-            case 'u':
-                if(!cell.left && !cell.right && !cell.top){
-                    return true;
-                }
-        }
-        return false;
-    }
-
-    boolean isCheckPoint(MazeData[][] maze, int[] pos){
-        MazeData cell = maze[pos[0]][pos[1]];
-        int count = 0;
-
-        if(cell.left)
-            count++;
-        if(cell.top)
-            count++;
-        if(cell.right)
-            count++;
-        if(cell.bottom)
-            count++;
-
-        if(count > 2){
-            return true; // is a checkpoint
-        }
-
-        return false;
     }
 }

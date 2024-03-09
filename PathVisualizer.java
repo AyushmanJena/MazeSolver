@@ -3,7 +3,7 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class PathVisualizer extends JFrame{
-    MazeData[][] mazeData;
+    Maze maze;
     private ArrayList<Point> solutionPath;
     private static final int SQUARE_SIZE = 50;
 
@@ -12,8 +12,8 @@ public class PathVisualizer extends JFrame{
     static int startR = 50;
     static int startC = 70;
 
-    PathVisualizer(MazeData[][] mazeData, ArrayList<Point> solutionPath){
-        this.mazeData = mazeData;
+    PathVisualizer(Maze maze, ArrayList<Point> solutionPath){
+        this.maze = maze;
         this.solutionPath = solutionPath;
 
         setTitle("Maze Solver");
@@ -31,18 +31,18 @@ public class PathVisualizer extends JFrame{
     void drawMaze(Graphics g){
         int x;
         int y;
-        for (int row = 0; row < mazeData.length; row++) {
-            for (int col = 0; col < mazeData[0].length; col++) {
+        for (int row = 0; row < maze.mazeData.length; row++) {
+            for (int col = 0; col < maze.mazeData[0].length; col++) {
                 x = col * SQUARE_SIZE + 30;
                 y = row * SQUARE_SIZE + 50;
 
                 g.setColor(Color.BLACK);
 
-                drawCell(g, mazeData, row, col, x, y);
+                drawCell(g, maze, row, col, x, y);
             }
         }
     }
-    static void drawCell(Graphics g2d, MazeData[][] maze, int row, int col, int x, int y) {
+    static void drawCell(Graphics g2d, Maze maze, int row, int col, int x, int y) {
         Graphics2D g2 = (Graphics2D) g2d; // Casting to Graphics2D
 
         // Create a thicker stroke
@@ -50,16 +50,16 @@ public class PathVisualizer extends JFrame{
         float thickness = 3; // Adjust the thickness as needed
         g2.setStroke(new BasicStroke(thickness));
 
-        if (!maze[row][col].top) {
+        if (!maze.mazeData[row][col].top) {
             g2d.drawLine(x, y, x + SQUARE_SIZE, y); // Top line
         }
-        if (!maze[row][col].right) {
+        if (!maze.mazeData[row][col].right) {
             g2d.drawLine(x + SQUARE_SIZE, y, x + SQUARE_SIZE, y + SQUARE_SIZE); // Right line
         }
-        if (!maze[row][col].bottom) {
+        if (!maze.mazeData[row][col].bottom) {
             g2d.drawLine(x + SQUARE_SIZE, y + SQUARE_SIZE, x, y + SQUARE_SIZE); // Bottom line
         }
-        if (!maze[row][col].left) {
+        if (!maze.mazeData[row][col].left) {
             g2d.drawLine(x, y + SQUARE_SIZE, x, y); // Left line
         }
 
@@ -68,7 +68,7 @@ public class PathVisualizer extends JFrame{
     }
 
     void drawPath(Graphics g){
-        SolveRecursive sol = new SolveRecursive();
+        //SolveRecursive sol = new SolveRecursive();
         //System.out.println("hello"); //debugging
         //System.out.println(solutionPath.size());
 
@@ -105,7 +105,7 @@ public class PathVisualizer extends JFrame{
         //repaint();
     }
 
-    public static void driver(MazeData[][] maze, ArrayList<int[]> ans){
+    static void driver(Maze maze, ArrayList<int[]> ans){
         //SolveRecursive sol = new SolveRecursive();
 
         ArrayList<Point> solutionPath = new ArrayList<>();
@@ -119,5 +119,4 @@ public class PathVisualizer extends JFrame{
         PathVisualizer draw = new PathVisualizer(maze, solutionPath);
         draw.setVisible(true);
     }
-
 }

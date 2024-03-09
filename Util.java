@@ -1,48 +1,66 @@
-class Util {
-    public MazeData[][] convert(String[][] mazeStr){
-        MazeData[][] maze = new MazeData[mazeStr.length][mazeStr[0].length];
-        for(int i = 0; i< mazeStr.length; i++){ //row of array
-            for(int j = 0; j< mazeStr[i].length; j++){ // column of array
-                maze[i][j] = new MazeData();
-                for(int c = 0; c <4; c++){ // for each string
-                    char ch = mazeStr[i][j].charAt(c);
-                    switch(c){
-                        case 0:
-                            if(ch == '1'){
-                                maze[i][j].left = true;
-                            }
-                            break;
-                        case 1:
-                            if(ch == '1'){
-                                maze[i][j].top = true;
-                            }
-                            break;
-                        case 2:
-                            if(ch == '1'){
-                                maze[i][j].right = true;
-                            }
-                            break;
-                        case 3:
-                            if(ch == '1'){
-                                maze[i][j].bottom = true;
-                            }
-                            break;
+import java.util.ArrayList;
+
+public class Util {
+    static void displayMaze(Maze maze){ // a console representation of the maze
+        int x = (maze.mazeData.length*2) +1;
+        int y = (maze.mazeData.length*2) +1;
+        boolean[][] drawArray = new boolean[x][y];
+
+        int i = 0, j = 0;
+        for(int r = 0; r < drawArray.length; r++){
+            if(r%2 == 0){
+                continue;
+            }
+            j = 0;
+            // else if r is odd
+            for(int c = 0; c < drawArray[r].length; c++){
+                if((r+c)%2 != 0){ // if r+c is odd continue;
+                    continue;
+                }
+                else{
+                    Maze.Cell cell = maze.mazeData[i][j];
+                    drawArray[r][c] = true;
+                    if(cell.left){
+                        drawArray[r][c-1] = true;
+                    }
+                    if(cell.top){
+                        drawArray[r-1][c] = true;
+                    }
+                    if(cell.right){
+                        drawArray[r][c+1] = true;
+                    }
+                    if(cell.bottom){
+                        drawArray[r+1][c] = true;
                     }
                 }
-                //System.out.print(maze[i][j].left+","+maze[i][j].top+","+maze[i][j].right+","+maze[i][j].bottom+"\n"); // For debugging purposes
+                j++;
             }
+            i++;
         }
-        return maze;
-    }
-
-    public void display(MazeData[][] maze){
-        for(int i = 0; i<maze.length; i++){
-            for(int j = 0; j<maze[i].length; j++){
-                System.out.print(maze[i][j].left+
-                        ","+maze[i][j].top+","+maze[i][j].right+
-                        ","+maze[i][j].bottom+"\n");
+        for(i = 0; i<drawArray.length; i++){
+            for(j = 0; j<drawArray[i].length; j++){
+                if(drawArray[i][j]){
+                    System.out.print(" ");
+                }
+                else{
+                    System.out.print("|");
+                }
             }
             System.out.println();
+        }
+    }
+
+    static void displayPath(ArrayList<int[]> path){
+        for(int[] arr : path){
+            System.out.println("(" + arr[0] + ", " + arr[1] + ")");
+        }
+    }
+
+    static void display(Maze maze){ // exclusively to check if data is stored or not
+        for(int i = 0; i< maze.mazeData.length; i++){
+            for(int j = 0; j<maze.mazeData[0].length; j++){
+                System.out.print(maze.mazeData[i][j].left+","+maze.mazeData[i][j].top+","+maze.mazeData[i][j].right+","+maze.mazeData[i][j].bottom+"\n");
+            }
         }
     }
 }
