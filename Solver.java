@@ -30,7 +30,6 @@ public class Solver {
             ans.add(r+""+c);
             setPath(ans);
             Util.displayPath(path);
-            //System.out.println(ans);
             System.out.println("END REACHED !!!");
             return 'y';
         }
@@ -41,29 +40,30 @@ public class Solver {
 
         if(maze.mazeData[r][c].right && lastMove != 'L'){
             ans.add(r+""+c);
-            lastMove = solveUtil(maze, ans, tempMaze, r, c+1, lastMove);
+            lastMove = solveUtil(maze, ans, tempMaze, r, c+1, 'R'); // Updated lastMove here
             ans.remove(ans.size() -1);
             if(lastMove == 'y') return 'y';
         }
         if(maze.mazeData[r][c].bottom && lastMove != 'U'){
             ans.add(r+""+c);
-            lastMove = solveUtil(maze,ans, tempMaze, r+1, c, 'D');
+            lastMove = solveUtil(maze, ans, tempMaze, r+1, c, 'D'); // Updated lastMove here
             ans.remove(ans.size()-1);
             if (lastMove == 'y') return 'y';
         }
         if(maze.mazeData[r][c].left && lastMove != 'R'){
             ans.add(r+""+c);
-            lastMove = solveUtil(maze,ans, tempMaze, r, c-1, 'L');
+            lastMove = solveUtil(maze, ans, tempMaze, r, c-1, 'L'); // Updated lastMove here
             ans.remove(ans.size()-1);
             if (lastMove == 'y') return 'y';
         }
         if(maze.mazeData[r][c].top && lastMove != 'D'){
             ans.add(r+""+c);
-            lastMove = solveUtil(maze,ans, tempMaze, r-1, c, 'U');
+            lastMove = solveUtil(maze, ans, tempMaze, r-1, c, 'U'); // Updated lastMove here
             ans.remove(ans.size()-1);
             if (lastMove == 'y') return 'y';
         }
         tempMaze[r][c] = false;
         return lastMove;
     }
+
 }
