@@ -9,9 +9,12 @@ class Maze{
         boolean bottom;
     }
     Cell[][] mazeData;
-    int[] start = {0, 0};
-    int[] end = {0,0};
-    ArrayList<int[]> solution;
+    //int[] start = {0, 0};
+    //int[] end = {0,0};
+    Point start = new Point(0, 0);
+    Point end =new Point(0,0);
+
+    ArrayList<Point> solution;
 
     Maze(){};
     Maze (String[][] mazeStr, int[] start, int[] end){
@@ -47,25 +50,30 @@ class Maze{
                 //System.out.print(maze[i][j].left+","+maze[i][j].top+","+maze[i][j].right+","+maze[i][j].bottom+"\n"); // For debugging purposes
             }
         }
-        this.start = start;
-        this.end = end;
+        this.start.row = start[0];
+        this.start.col = start[1];
+        this.end.row = end[0];
+        this.end.col = end[1];
     }
 }
 
 public class Main{
     public static void main(String[] args) {
-        String[][] mazeStr = { // 5x5 with island
-                {"0010", "1010", "1010", "1010", "1001"},
-                {"0011", "1011", "1011", "1011", "1101"},
-                {"0101", "0110", "1100", "0101", "0101"},
-                {"0111", "1010", "1010", "1100", "0101"},
-                {"0100", "0010", "1010", "1010", "1100"}};
+        String[][] mazeStr = { //8x8 maze
+                {"0010", "1010", "1001", "0011", "1010", "1000", "0011", "1001"},
+                {"0011", "1001", "0101", "0101", "0010", "1010", "1100", "0101"},
+                {"0101", "0100", "0101", "0111", "1010", "1001", "0010", "1101"},
+                {"0111", "1010", "1101", "0101", "0001", "0110", "1010", "1101"},
+                {"0101", "0010", "1100", "0101", "0110", "1011", "1010", "1100"},
+                {"0111", "1011", "1010", "1100", "0011", "1110", "1010", "1001"},
+                {"0101", "0100", "0001", "0001", "0101", "0010", "1001", "0101"},
+                {"0110", "1010", "1100", "0100", "0110", "1010", "1100", "0100"}};
         int[] start = {0, 0};
-        int[] end = {4,4};
+        int[] end = {7,7};
         Maze maze = new Maze(mazeStr, start, end);
         Util.displayMaze(maze);
         Solver.solve(maze);
-        PathVisualizer.driver(maze, maze.solution);
+        PathVisualizer.driver(maze, maze.solution); // to be fixed
     }
 }
 

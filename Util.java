@@ -50,9 +50,9 @@ public class Util {
         }
     }
 
-    static void displayPath(ArrayList<int[]> path){
-        for(int[] arr : path){
-            System.out.println("(" + arr[0] + ", " + arr[1] + ")");
+    static void displayPath(ArrayList<Point> path){
+        for(Point point : path){
+            System.out.println("(" + point.row + ", " + point.col + ")");
         }
     }
 

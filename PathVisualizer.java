@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class PathVisualizer extends JFrame{
     Maze maze;
@@ -9,8 +10,25 @@ public class PathVisualizer extends JFrame{
 
     static int tempC = 0;
     static int tempR = 0;
-    static int startR = 50;
-    static int startC = 70;
+    static int startR ; //50 by default
+    static int startC ; //70 by default
+
+    static void driver(Maze maze, ArrayList<Point> ans){
+        Point startPoint = maze.start;
+        startR = 50 + (startPoint.col*50);
+        startC = 70 + ((startPoint.row-1)*50);
+
+        ArrayList<Point> solutionPath = new ArrayList<>();
+        for(Point p : ans){
+            int x = p.row;
+            int y = p.col;
+            //System.out.println(x+":"+y); //for debugging
+            solutionPath.add(new Point(x, y));
+        }
+
+        PathVisualizer draw = new PathVisualizer(maze, solutionPath);
+        draw.setVisible(true);
+    }
 
     PathVisualizer(Maze maze, ArrayList<Point> solutionPath){
         this.maze = maze;
@@ -20,6 +38,9 @@ public class PathVisualizer extends JFrame{
         setSize(500, 500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
+        ImageIcon logo = new ImageIcon(this.getClass().getClassLoader().getResource("res/icon.png"));
+
+        setIconImage(logo.getImage());
     }
 
     public void paint(Graphics g){
@@ -74,8 +95,8 @@ public class PathVisualizer extends JFrame{
 
         for(int i = 0; i< solutionPath.size(); i++) {
             Point point = solutionPath.get(i);
-            int r = (int)point.getX();
-            int c = (int)point.getY();
+            int r = point.row;
+            int c = point.col;
 
             g.setColor(Color.RED);
             g.fillOval(startR, startC,9, 9);
@@ -103,20 +124,5 @@ public class PathVisualizer extends JFrame{
         }
         g.fillOval(startR, startC,9, 9);
         //repaint();
-    }
-
-    static void driver(Maze maze, ArrayList<int[]> ans){
-        //SolveRecursive sol = new SolveRecursive();
-
-        ArrayList<Point> solutionPath = new ArrayList<>();
-        for(int[] p : ans){
-            int x = p[0];
-            int y = p[1];
-            //System.out.println(x+":"+y); //for debugging
-            solutionPath.add(new Point(x, y));
-        }
-
-        PathVisualizer draw = new PathVisualizer(maze, solutionPath);
-        draw.setVisible(true);
     }
 }
